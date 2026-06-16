@@ -97,7 +97,7 @@ const navigate = useNavigate()
               </h1>
               <p className="text-xl text-goldLight/80 mb-6">{t(section, 'subtitle')}</p>
               <p className="text-goldLight/70 leading-relaxed mb-8 text-lg">{t(section, 'heroText')}</p>
-{user?.plan !== PLAN_IDS.ELITE && (
+{(!user || user.plan === PLAN_IDS.FREE) && (
   <button
     onClick={() => handleSubscribe(navigate, true, { service: section })} // Passing true for isAuthenticated as a fallback
     className="btn-primary text-dark px-8 py-4 rounded-2xl font-bold text-lg inline-flex items-center gap-3 shadow-xl shadow-gold/20"
@@ -302,10 +302,12 @@ const navigate = useNavigate()
             >
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t('common', 'ctaTitle')}</h2>
               <p className="text-goldLight/70 max-w-2xl mx-auto mb-8 text-lg">{t('common', 'ctaSubtitle')}</p>
-              <Link to="/join" className="btn-primary text-dark px-8 py-4 rounded-2xl font-bold text-lg inline-flex items-center gap-3 shadow-xl shadow-gold/20">
-                {t('common', 'ctaButton')}
-                <ArrowLeft size={20} />
-              </Link>
+              {(!user || user.plan === PLAN_IDS.FREE) && (
+                <Link to="/join" className="btn-primary text-dark px-8 py-4 rounded-2xl font-bold text-lg inline-flex items-center gap-3 shadow-xl shadow-gold/20">
+                  {t('common', 'ctaButton')}
+                  <ArrowLeft size={20} />
+                </Link>
+              )}
             </motion.div>
           </div>
         </div>

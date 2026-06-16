@@ -7,6 +7,7 @@ import { useAuth } from '../../context/AuthContext'
 import { handleSubscribe } from '../../utils/subscribeUtils'
 import { findMedicalCenterById, findBankById } from '../../data/db'
 import NotFound from '../NotFound'
+import { PLAN_IDS } from '../../types/subscription'
 import {
   MapPin, Phone, Star, ArrowLeft,
   Building2, Quote, MessageCircle, ShieldCheck,
@@ -34,7 +35,7 @@ export default function ServiceDetail() {
   const { id } = useParams()
   const location = useLocation()
   const { t, td, lang } = useLanguage()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, user } = useAuth()
   const navigate = useNavigate()
   const [entity, setEntity] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -95,13 +96,15 @@ export default function ServiceDetail() {
               <p className="text-goldLight/80 leading-relaxed text-lg">
                 {td(isMedical ? 'medicalCenters' : 'banks', entity.name, 'description')}
               </p>
-              <button
-                onClick={() => handleSubscribe(navigate, isAuthenticated, { service: isMedical ? 'medical' : 'financial', provider: entity.id, providerName: entity.name })}
-                className="mt-6 btn-primary text-dark px-8 py-4 rounded-2xl font-bold text-lg inline-flex items-center gap-3 shadow-xl shadow-gold/20"
-              >
-                <CreditCard size={20} />
-                {lang === 'ar' ? 'اشترك الآن' : 'Subscribe Now'}
-              </button>
+              {(!isAuthenticated || user?.plan === PLAN_IDS.FREE) && (
+                <button
+                  onClick={() => handleSubscribe(navigate, isAuthenticated, { service: isMedical ? 'medical' : 'financial', provider: entity.id, providerName: entity.name })}
+                  className="mt-6 btn-primary text-dark px-8 py-4 rounded-2xl font-bold text-lg inline-flex items-center gap-3 shadow-xl shadow-gold/20"
+                >
+                  <CreditCard size={20} />
+                  {lang === 'ar' ? 'اشترك الآن' : 'Subscribe Now'}
+                </button>
+              )}
             </div>
             <motion.div
               initial={{ opacity: 0, x: 50 }}

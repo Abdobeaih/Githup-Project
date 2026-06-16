@@ -383,7 +383,7 @@ export default function MedicalInsurance() {
             >
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t('common', 'ctaTitle')}</h2>
               <p className="text-goldLight/70 max-w-2xl mx-auto mb-8 text-lg">{t('common', 'ctaSubtitle')}</p>
-              {user?.plan !== PLAN_IDS.ELITE && (
+              {(!user || user.plan === PLAN_IDS.FREE) && (
                 <button onClick={() => openModal(null)} className="btn-primary text-dark px-8 py-4 rounded-2xl font-bold text-lg inline-flex items-center gap-3 shadow-xl shadow-gold/20">
                   {t('common', 'ctaButton')}
                   <ArrowLeft size={20} />
